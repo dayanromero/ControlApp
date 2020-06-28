@@ -128,6 +128,29 @@ export const cardStatistics = (item, index) => {
 };
 
 /**
+ * dataSource Map Points
+ * @param {*} coor
+ */
+export const dataSource = (coor) => {
+   return {
+      type: 'FeatureCollection',
+      features: [
+         {
+            type: 'Feature',
+            id: '1',
+            properties: {
+               icon: 'locationIcon',
+            },
+            geometry: {
+               type: 'Point',
+               coordinates: coor,
+            },
+         },
+      ],
+   };
+};
+
+/**
  * cardStatistics Styles
  */
 const styles = StyleSheet.create({
@@ -156,3 +179,4 @@ const styles = StyleSheet.create({
       backgroundColor: theme.colors.primary,
    },
 });
+

@@ -36,6 +36,7 @@ const styles = StyleSheet.create({
       marginVertical: 2,
    },
    input: {
+      fontSize: 16,
       backgroundColor: theme.colors.backg,
    },
    error: {

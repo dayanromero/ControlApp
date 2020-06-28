@@ -12,14 +12,12 @@
 import React, {Component} from 'react';
 import {
   StyleSheet,
-  Text,
   View,
   Platform,
   SafeAreaView,
   ScrollView,
   KeyboardAvoidingView,
 } from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {Formik} from 'formik';
 
 //Connect redux
@@ -33,7 +31,6 @@ import Heading from '../../components/Heading/Heading';
 import Button from '../../components/Button/Button';
 import InputSelect from '../../components/Input/InputSelect';
 import TextButton from '../../components/Button/TextButton';
-import AuthContainer from '../../components/AuthContainer';
 import InputText from '../../components/Input/InputText';
 import ShowAlert from '../../components/Alert/Alert';
 
@@ -93,15 +90,16 @@ class SignUpScreen extends Component {
   };
 
   initialValues = {
+    userType: '',
     name: '',
+    email: '',
+    phone: '',
+    password: '',
+    stablishment: '',
     city: '',
     state: '',
-    documentType: '',
+    address: '',
     id: '',
-    expeditionDate: '',
-    testResult: '',
-    phone: '',
-    email: '',
   };
 
   render() {
@@ -111,13 +109,11 @@ class SignUpScreen extends Component {
     return (
       <SafeAreaView style={styles.container}>
         <ScrollView>
-          <View>
-            <Icon name="account-circle-outline" style={styles.iconLogin} />
-            <Heading style={styles.titleLogin}>Control App</Heading>
-            <Text style={styles.subTitleLogin}>
-              Por favor proveea la informacion a continuacion para registrarse.
-            </Text>
-          </View>
+          <Heading
+            icon="account-circle-outline"
+            title="Control App"
+            subTitle="Por favor proveea la informacion a continuacion para registrarse."
+          />
 
           <KeyboardAvoidingView>
             <>
@@ -157,7 +153,6 @@ class SignUpScreen extends Component {
                       errorText={touched.documentType && errors.documentType}
                     />
                     <InputText
-                      style={styles.input}
                       label="Nombre"
                       returnKeyType="next"
                       placeholder={'Nombre'}
@@ -168,7 +163,6 @@ class SignUpScreen extends Component {
                       autoCapitalize="none"
                     />
                     <InputText
-                      style={styles.input}
                       label="Correo electronico"
                       returnKeyType="next"
                       placeholder={'Correo electronico'}
@@ -181,7 +175,6 @@ class SignUpScreen extends Component {
                       textContentType="emailAddress"
                     />
                     <InputText
-                      style={styles.input}
                       returnKeyType="next"
                       placeholder={'Telefono'}
                       keyboardType={'phone-pad'}
@@ -192,7 +185,6 @@ class SignUpScreen extends Component {
                       errorText={touched.phone && errors.phone}
                     />
                     <InputText
-                      style={styles.input}
                       label="Contraseña"
                       returnKeyType="done"
                       placeholder={'Contraseña'}
@@ -203,7 +195,6 @@ class SignUpScreen extends Component {
                       secureTextEntry
                     />
                     <InputText
-                      style={styles.input}
                       label="Nombre del establecimiento"
                       returnKeyType="next"
                       placeholder={'Nombre del establecimiento'}
@@ -224,7 +215,6 @@ class SignUpScreen extends Component {
                       errorText={touched.city && errors.city}
                     />
                     <InputText
-                      style={styles.input}
                       onTouchStart={this.showContent}
                       returnKeyType="next"
                       placeholder={'Direccion'}
@@ -263,34 +253,10 @@ class SignUpScreen extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    flexDirection: 'column',
     margin: 20,
-  },
-  titleLogin: {
-    marginBottom: 34,
-    color: theme.colors.primary,
-  },
-  input: {
-    fontSize: 16,
   },
   btnLogin: {
     marginVertical: 8,
-  },
-  label: {
-    color: theme.colors.secondary,
-  },
-  iconLogin: {
-    width: 120,
-    height: 120,
-    textAlign: 'center',
-    fontSize: 120,
-    color: theme.colors.secondary,
-  },
-  subTitleLogin: {
-    fontSize: 17,
-    textAlign: 'center',
-    marginBottom: 10,
-    marginTop: 10,
   },
   btnSignUp: {
     color: theme.colors.primary,

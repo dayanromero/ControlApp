@@ -9,7 +9,7 @@
  */
 
 // Dependencies
-import React, { useState } from 'react';
+import React from 'react';
 import { StyleSheet } from 'react-native';
 import MapboxGL from '@react-native-mapbox-gl/maps';
 

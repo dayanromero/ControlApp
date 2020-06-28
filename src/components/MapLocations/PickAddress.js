@@ -18,7 +18,7 @@ import MapLocations from '../MapLocations/MapLocations';
 
 //Utilities
 import { getAddress, DEFAULT_CENTER_COORDINATE } from '../../core/utils';
-import { dataSource } from '../../config/default/'
+import { dataSource } from '../../core/utils';
 
 class PickAddress extends Component {
    state = {

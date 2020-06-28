@@ -37,22 +37,3 @@ export const validationSchema = yup.object({
       city: yup.string().required('Campo requerido'),
       state: yup.string().required('Campo requerido'),
    });
-
-   export const dataSource = (coor) => {
-      return {
-         type: 'FeatureCollection',
-         features: [
-            {
-               type: 'Feature',
-               id: '1',
-               properties: {
-                  icon: 'locationIcon',
-               },
-               geometry: {
-                  type: 'Point',
-                  coordinates: coor,
-               },
-            },
-         ],
-      };
-   };

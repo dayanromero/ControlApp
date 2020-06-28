@@ -10,22 +10,44 @@
 
 // Dependencies
 import React from 'react';
-import { Text, StyleSheet } from 'react-native';
+import {Text, View, StyleSheet} from 'react-native';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
-const Heading = ({children, style, ...props}) => {
-    return (
-        <Text {...props} style={[styles.text, style]}>
-            {children}
-        </Text>
-    );
+//Utilities
+import {theme} from '../../core/theme';
+
+const Heading = ({title, subTitle, icon}) => {
+  return (
+    <View style={styles.container}>
+      <Icon name={icon} style={styles.icon} />
+      <Text style={styles.title}>{title}</Text>
+      <Text style={styles.subTitle}>{subTitle}</Text>
+    </View>
+  );
 };
 
 const styles = StyleSheet.create({
-    text: {
-        fontSize: 25,
-        fontWeight: 'bold',
-        color: 'black',
-    },
+  container: {
+    flex: 1,
+  },
+  title: {
+    fontSize: 25,
+    color: 'black',
+    textAlign: 'center',
+    fontWeight: 'bold',
+  },
+  subTitle: {
+    fontSize: 17,
+    color: 'grey',
+    textAlign: 'center',
+    marginBottom: 10,
+    marginTop: 5,
+  },
+  icon: {
+    textAlign: 'center',
+    fontSize: 100,
+    color: theme.colors.secondary,
+  },
 });
 
 export default Heading;

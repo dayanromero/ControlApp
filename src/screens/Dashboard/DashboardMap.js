@@ -30,7 +30,7 @@ import BottomMenu from '../../components/Button/BottomMenu/BottomMenu';
 
 //Utilities
 import { DEFAULT_CENTER_COORDINATE } from '../../core/utils';
-import { dataSource } from '../../config/default/';
+import { dataSource } from '../../core/utils';
 
 class Dashboard extends Component {
    state = {
