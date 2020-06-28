@@ -12,7 +12,7 @@
 import * as React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { Card, Divider } from 'react-native-paper';
-import Icon from 'react-native-vector-icons/Ionicons';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 //Utilities
 import { theme } from '../../core/theme';
@@ -32,7 +32,7 @@ const InfoCard = (data) => {
             <Card.Content>
                 <View style={styles.date}>
                     <View style={styles.date}>
-                        <Icon name="ios-calendar" style={styles.icon} />
+                        <Icon name="calendar-month" style={styles.icon} />
                         <Text style={styles.textL}>{formatDate(fecha, 'f')}</Text>
                     </View>
                     <Text style={[styles.textL, styles.texts]}>{type}</Text>
