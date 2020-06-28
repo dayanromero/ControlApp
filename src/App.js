@@ -1,114 +1,78 @@
 /**
- * Sample React Native App
- * https://github.com/facebook/react-native
+ * This source code is the confidential, proprietary information of
+ * GoDevelop, you may not disclose such information,
+ * and may only use it in accordance with the terms of the license
+ * agreement you entered into with GoDevelop.
  *
- * @format
- * @flow strict-local
+ * GoDevelop.
+ * All Rights Reserved.
  */
 
-import React from 'react';
-import {
-  SafeAreaView,
-  StyleSheet,
-  ScrollView,
-  View,
-  Text,
-  StatusBar,
-} from 'react-native';
+// Dependencies
+import React, { Component } from 'react';
 
-import {
-  Header,
-  LearnMoreLinks,
-  Colors,
-  DebugInstructions,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+//Connect redux
+import { connect } from 'react-redux';
 
-const App: () => React$Node = () => {
-  return (
-    <>
-      <StatusBar barStyle="dark-content" />
-      <SafeAreaView>
-        <ScrollView
-          contentInsetAdjustmentBehavior="automatic"
-          style={styles.scrollView}>
-          <Header />
-          {global.HermesInternal == null ? null : (
-            <View style={styles.engine}>
-              <Text style={styles.footer}>Engine: Hermes</Text>
-            </View>
-          )}
-          <View style={styles.body}>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Step One</Text>
-              <Text style={styles.sectionDescription}>
-                Edit <Text style={styles.highlight}>App.js</Text> to change this
-                screen and then come back to see your edits.
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>See Your Changes</Text>
-              <Text style={styles.sectionDescription}>
-                <ReloadInstructions />
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Debug</Text>
-              <Text style={styles.sectionDescription}>
-                <DebugInstructions />
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Learn More</Text>
-              <Text style={styles.sectionDescription}>
-                Read the docs to discover what to do next:
-              </Text>
-            </View>
-            <LearnMoreLinks />
-          </View>
-        </ScrollView>
-      </SafeAreaView>
-    </>
-  );
+//Actions
+import { getToken, cleanToken } from './screens/Login/actions/';
+
+//Navigation
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+
+//Components
+import AuthStackNavigator from './navigation/AuthStackNavigator';
+//import DrawerStackNavigator from './navigation/DrawerStackNavigator';
+import Loading from './components/Loading/Loading';
+
+const RootStack = createStackNavigator();
+
+class App extends Component {
+   componentDidMount() {
+      this.props.validateToken();
+   }
+   
+   logOut() {
+      this.props.clearDown();
+   }
+
+   renderScreens() {
+      const { accessToken, loading } = this.props;
+      if (loading) {
+         return <RootStack.Screen name={'Loading'} component={Loading} />;
+      } else if (accessToken) {
+         return <RootStack.Screen name={'MainStack'} component={DrawerStackNavigator} />;
+      } else {
+         return <RootStack.Screen name={'AuthStack'} component={AuthStackNavigator} />;
+      }
+   }
+
+   render() {
+      return (
+         <NavigationContainer>
+            <RootStack.Navigator screenOptions={{ headerShown: false }}>
+               {this.renderScreens()}
+            </RootStack.Navigator>
+         </NavigationContainer>
+      );
+   }
+}
+
+const mapStateToProps = (state) => {
+   const { accessToken, loading } = state.login;
+   return { accessToken, loading };
 };
 
-const styles = StyleSheet.create({
-  scrollView: {
-    backgroundColor: Colors.lighter,
-  },
-  engine: {
-    position: 'absolute',
-    right: 0,
-  },
-  body: {
-    backgroundColor: Colors.white,
-  },
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-    color: Colors.black,
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-    color: Colors.dark,
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-  footer: {
-    color: Colors.dark,
-    fontSize: 12,
-    fontWeight: '600',
-    padding: 4,
-    paddingRight: 12,
-    textAlign: 'right',
-  },
-});
+const mapDispatchToProps = (dispatch) => {
+   return {
+      validateToken: () => {
+         return dispatch(getToken());
+      },
+      clearDown: () => {
+         return dispatch(cleanToken());
+      }
+   };
+};
 
-export default App;
+export default connect(mapStateToProps, mapDispatchToProps)(App);

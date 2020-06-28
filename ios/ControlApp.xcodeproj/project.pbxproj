@@ -45,6 +45,8 @@
 		00E356EE1AD99517003FC87E /* ControlAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ControlAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* ControlAppTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ControlAppTests.m; sourceTree = "<group>"; };
+		13937BCD24A8133E009F3658 /* MaterialCommunityIcons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = MaterialCommunityIcons.ttf; path = ../../Fonts/MaterialCommunityIcons.ttf; sourceTree = "<group>"; };
+		13937BD024A8133E009F3658 /* MaterialIcons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = MaterialIcons.ttf; path = ../../Fonts/MaterialIcons.ttf; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* ControlApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ControlApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = ControlApp/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = ControlApp/AppDelegate.m; sourceTree = "<group>"; };
@@ -122,9 +124,19 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		13937BC824A81305009F3658 /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				13937BCD24A8133E009F3658 /* MaterialCommunityIcons.ttf */,
+				13937BD024A8133E009F3658 /* MaterialIcons.ttf */,
+			);
+			name = Fonts;
+			sourceTree = "<group>";
+		};
 		13B07FAE1A68108700A75B9A /* ControlApp */ = {
 			isa = PBXGroup;
 			children = (
+				13937BC824A81305009F3658 /* Fonts */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
@@ -154,7 +166,6 @@
 			children = (
 			);
 			name = Resources;
-			path = "";
 			sourceTree = "<group>";
 		};
 		823D2AD060FCCE9868F6C977 /* Pods */ = {
@@ -169,7 +180,6 @@
 				47BF209C778511E39A4C27CB /* Pods-ControlApp-tvOSTests.debug.xcconfig */,
 				ED3E5B4E3BF7D2C540CC3FB4 /* Pods-ControlApp-tvOSTests.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
