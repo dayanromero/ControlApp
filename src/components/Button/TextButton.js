@@ -15,10 +15,10 @@ import { TouchableOpacity, Text, StyleSheet } from 'react-native';
 const TextButton = ({title, style, onPress}) => {
     return (
         <TouchableOpacity
-            style={[styles.container, style]}
+            style={[styles.container]}
             onPress={onPress}
         >
-            <Text style={styles.text}>{title}</Text>
+            <Text style={[styles.text, style]}>{title}</Text>
         </TouchableOpacity>
     );
 };

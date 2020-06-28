@@ -292,7 +292,6 @@ class NewUserScreen extends Component {
 const styles = StyleSheet.create({
    container: {
       flex: 1,
-      backgroundColor: theme.colors.grey,
    },
    scrollView: {
       padding: 16,

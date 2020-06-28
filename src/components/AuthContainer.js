@@ -10,7 +10,7 @@
 
 // Dependencies
 import * as React from 'react';
-import {View, StyleSheet} from 'react-native';
+import {View, StyleSheet, Platform} from 'react-native';
 
 const AuthContainer = ({children}) => {
   return <View style={styles.container}>{children}</View>;
@@ -19,8 +19,8 @@ const AuthContainer = ({children}) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 16,
-    paddingTop: 200,
+    padding: 20,
+    paddingTop: Platform.OS === 'ios' ? 150 : 100,
     alignItems: 'center',
   },
 });

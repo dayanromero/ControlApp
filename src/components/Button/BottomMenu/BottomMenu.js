@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
-import { theme } from '../../core/theme';
+import { theme } from '../../../core/theme';
 const { height } = Dimensions.get('window');
 
 const BottomMenu = (props) => {
@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
       alignItems: 'center',
       justifyContent: 'space-around',
       flexDirection: 'row',
-      height: height / 14,
+      height: height / 13,
       backgroundColor: theme.colors.primary,
    },
    texts: {

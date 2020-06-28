@@ -48,3 +48,19 @@ export function getUserInfo(token) {
   const auth0 = initializeAuth0();
   return auth0.auth.userInfo({ token });
 }
+
+/**
+ * Register a user in Auth0 API
+ * @param { string } email - Email of the user
+ * @param { string } username - Username of the user
+ * @param { string } password - Password of the user
+ * @return { Promise } Auth0 response
+ */
+export function createUser(email, username, password) {
+  const auth0 = initializeAuth0();
+  return auth0.auth.createUser({
+    email,
+    username,
+    password
+  });
+}

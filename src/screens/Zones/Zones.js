@@ -78,7 +78,6 @@ class ZoneScreen extends Component {
 const styles = StyleSheet.create({
    container: {
       flex: 1,
-      backgroundColor: theme.colors.grey,
    },
    view: {
       padding: 16,
