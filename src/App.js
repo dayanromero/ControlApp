@@ -23,7 +23,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 
 //Components
 import AuthStackNavigator from './navigation/AuthStackNavigator';
-//import DrawerStackNavigator from './navigation/DrawerStackNavigator';
+import DrawerStackNavigator from './navigation/DrawerStackNavigator';
 import Loading from './components/Loading/Loading';
 
 const RootStack = createStackNavigator();

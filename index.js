@@ -16,7 +16,7 @@
 
 // Dependencies
 import * as React from 'react';
-//import 'react-native-gesture-handler';
+import 'react-native-gesture-handler';
 import { AppRegistry } from 'react-native';
 import { Provider } from 'react-redux';
 import { Provider as PaperProvider } from 'react-native-paper';
