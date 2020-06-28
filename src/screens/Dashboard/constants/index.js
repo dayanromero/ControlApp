@@ -1,0 +1,4 @@
+export const SEARCH = 'SEARCH';
+export const SEARCH_SUCCESS = 'SEARCH_SUCCESS';
+export const SEARCH_FAILURE = 'SEARCH_FAILURE';
+export const SET_ERROR_FALSE = 'SET_ERROR_FALSE';
