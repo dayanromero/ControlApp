@@ -159,6 +159,7 @@ class EditUserScreen extends Component {
                   }) => (
                     <View>
                       <InputText
+                        lable="Nombre"
                         returnKeyType="next"
                         placeholder={'Nombres'}
                         keyboardType={'default'}
@@ -169,9 +170,10 @@ class EditUserScreen extends Component {
                         errorText={touched.name && errors.name}
                       />
                       <InputText
+                        label="Dirección"
                         onTouchStart={this.showContent}
                         returnKeyType="next"
-                        placeholder={'Direccion'}
+                        placeholder={'Dirección'}
                         keyboardType={'default'}
                         onChangeText={handleChange('address')}
                         onBlur={handleBlur('address')}
@@ -180,6 +182,7 @@ class EditUserScreen extends Component {
                         errorText={touched.address && errors.address}
                       />
                       <InputSelect
+                        label="Ciudad"
                         items={cities}
                         value={this.state.city}
                         onPress={handleChange('city')}
@@ -190,6 +193,7 @@ class EditUserScreen extends Component {
                         errorText={touched.city && errors.city}
                       />
                       <InputSelect
+                        lable="Departamento"
                         items={departments}
                         value={this.state.state}
                         onPress={handleChange('state')}
@@ -200,6 +204,7 @@ class EditUserScreen extends Component {
                         errorText={touched.state && errors.state}
                       />
                       <InputSelect
+                        lable="Tipo de documento"
                         items={optionsId}
                         value={this.state.documentType}
                         onPress={handleChange('documentType')}
@@ -210,6 +215,7 @@ class EditUserScreen extends Component {
                         errorText={touched.documentType && errors.documentType}
                       />
                       <InputText
+                        label="Numero de documento"
                         returnKeyType="next"
                         placeholder={'Numero de documento'}
                         keyboardType={'number-pad'}
@@ -220,9 +226,10 @@ class EditUserScreen extends Component {
                         errorText={touched.id && errors.id}
                       />
                       <DatePicker
+                        label="Fecha de expedición"
                         onPress={handleChange('expeditionDate')}
                         styles={styles.input}
-                        placeholder={'Fecha de expedicion'}
+                        placeholder={'Fecha de expedición'}
                         onChangeText={this.handleDatePicker}
                         onBlur={handleBlur('expeditionDate')}
                         value={this.state.expeditionDate}
@@ -231,6 +238,7 @@ class EditUserScreen extends Component {
                         }
                       />
                       <InputSelect
+                        lable="Prueba"
                         items={optionsTest}
                         value={this.state.testData}
                         onPress={handleChange('testResult')}
@@ -241,8 +249,9 @@ class EditUserScreen extends Component {
                         errorText={touched.testResult && errors.testResult}
                       />
                       <InputText
+                        lable="Teléfono"
                         returnKeyType="next"
-                        placeholder={'Telefono'}
+                        placeholder={'Teléfono'}
                         keyboardType={'phone-pad'}
                         onChangeText={handleChange('phone')}
                         onBlur={handleBlur('phone')}
@@ -251,8 +260,9 @@ class EditUserScreen extends Component {
                         errorText={touched.phone && errors.phone}
                       />
                       <InputText
+                        lable="Correo electrónico"
                         returnKeyType="next"
-                        placeholder={'Correo electronico'}
+                        placeholder={'Correo electrónico'}
                         keyboardType={'email-address'}
                         onChangeText={handleChange('email')}
                         onBlur={handleBlur('email')}

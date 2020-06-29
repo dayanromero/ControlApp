@@ -1,54 +1,43 @@
-import { LOGIN, LOGIN_SUCCESS, LOGIN_FAILURE, SAVE_TOKEN, CLEAN_TOKEN, RESET } from '../constants';
+import {
+    CREATE_ESTABLISHMENT,
+    CREATE_ESTABLISHMENT_SUCCESS,
+    CREATE_ESTABLISHMENT_FAILURE,
+    CLEAR_ESTABLISHMENT,
+} from '../constants';
 
 const initialState = {
-   email: '',
-   password: '',
-   error: '',
-   expiresIn: '',
-   idToken: '',
-   accessToken: '',
-   loading: true,
+   data: null,
+   loading: false,
    error: false,
+   registro: false,
 };
 
-export default loginReducer = (state = initialState, action) => {
+export const createEstablishmentReducer = (state = initialState, action) => {
    switch (action.type) {
-      case LOGIN:
+      case CREATE_ESTABLISHMENT:
          return {
             ...state,
+            data: null,
             loading: true,
          };
-      case LOGIN_SUCCESS:
-         const { idToken, accessToken, expiresIn } = action.payload;
+      case CREATE_ESTABLISHMENT_SUCCESS:
          return {
             ...state,
-            idToken,
-            accessToken,
-            expiresIn,
+            data: action.payload.data,
             loading: false,
+            registro: true,
          };
-      case SAVE_TOKEN:
-         return {
-            ...state,
-            accessToken: action.payload,
-            loading: false,
-         };
-      case CLEAN_TOKEN:
-         return {
-            ...state,
-            accessToken: '',
-         }
-      case LOGIN_FAILURE:
+      case CREATE_ESTABLISHMENT_FAILURE:
          return {
             ...state,
             loading: false,
             error: true,
          };
-      case RESET:
+      case CLEAR_ESTABLISHMENT:
          return {
             ...state,
-            loading: false,
-            error: false,
+            registro: false,
+            loading: false
          };
       default:
          return state;

@@ -85,7 +85,7 @@ class LoginScreen extends Component {
         ) : null}
         <Heading
           icon='account-circle-outline'
-          title='Control App'
+          title='Ingresar'
          />
         <InputText
           style={styles.input}

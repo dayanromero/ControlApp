@@ -59,7 +59,7 @@ class PickAddress extends Component {
                      animationMode={'flyTo'}
                      centerCoordinate={this.state.location}
                   />
-                  {/* <MapboxGL.UserLocation /> */}
+                  <MapboxGL.UserLocation />
                   <MapLocations
                      show={() => {}}
                      centerLocation={this.state.location}

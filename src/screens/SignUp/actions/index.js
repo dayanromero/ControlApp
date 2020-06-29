@@ -1,76 +1,50 @@
-import { LOGIN, LOGIN_SUCCESS, LOGIN_FAILURE, SAVE_TOKEN, RESET, CLEAN_TOKEN } from '../constants';
-import { authUser } from '../../../config/auth';
-import AsyncStorage from '@react-native-community/async-storage';
+import {
+    CREATE_ESTABLISHMENT,
+    CREATE_ESTABLISHMENT_SUCCESS,
+    CREATE_ESTABLISHMENT_FAILURE,
+    CLEAR_ESTABLISHMENT,
+} from '../constants';
 
-export const logUser = () => {
-   return {
-      type: LOGIN,
-   };
+import { createEstablishment } from '../../../config/api';
+
+export const saveEstablishment = (data) => {
+    return {
+        type: CREATE_ESTABLISHMENT,
+        payload: {
+            data
+        }
+    };
 };
 
-export const logUserSuccess = (response) => {
-   const { idToken, accessToken, expiresIn } = response;
-   return {
-      type: LOGIN_SUCCESS,
-      payload: {
-         accessToken,
-         idToken,
-         expiresIn,
-      },
-   };
+export const saveEstablishmentSuccess = (data) => {
+    return {
+        type: CREATE_ESTABLISHMENT_SUCCESS,
+        payload: {
+            data,
+        },
+    };
 };
 
-export const logUserFailure = (error) => {
-   return {
-      type: LOGIN_FAILURE,
-      payload: {
-         error,
-      },
-   };
+export const saveEstablishmentFailure = (data) => {
+    return { type: CREATE_ESTABLISHMENT_FAILURE };
 };
 
-export const resetValues = () => {
-   return { 
-      type: RESET
-   };
+export const resetEstablishmentValues = () => {
+    return { type: CLEAR_ESTABLISHMENT };
 };
 
-export const saveToken = (token) => {
-   return {
-      type: SAVE_TOKEN,
-      payload: token,
-   };
-};
-
-export const getToken = () => {
-   return (dispatch) => {
-      AsyncStorage.getItem('idToken').then((token) => {
-         dispatch(saveToken(token));
-      });
-   };
-};
-
-export const cleanToken = () => {
-   return {
-      type: CLEAN_TOKEN,
-   };
-};
-
-export const logout = () => {
-   return (dispatch) => {
-      AsyncStorage.removeItem('idToken')
-         .then(()=> dispatch(cleanToken()));
-   };
-};
-
-export const authenticateUser = (username, password) => {
-   return (dispatch) => {
-      dispatch(logUser());
-      authUser(username, password)
-         .then(async (response) => {
-            dispatch(logUserSuccess(response));
-            await AsyncStorage.setItem('idToken', response.accessToken);
-         })
-         .catch((error) => dispatch(logUserFailure(error)));
-   };
+export const saveNewEstablishment = (data) => {
+    return (dispatch) => {
+        dispatch(saveEstablishment(data));
+        createEstablishment(data)
+            .then((response) => {
+                dispatch(saveEstablishmentSuccess(response));
+                if (!response) {
+                    dispatch(saveEstablishmentFailure());
+                }
+            })
+            .catch((error) => {
+                dispatch(saveEstablishmentFailure(error))
+            });
+    };
 };

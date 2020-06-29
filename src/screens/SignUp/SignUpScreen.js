@@ -13,6 +13,7 @@ import React, {Component} from 'react';
 import {
   StyleSheet,
   View,
+  Text,
   Platform,
   SafeAreaView,
   ScrollView,
@@ -23,8 +24,8 @@ import {Formik} from 'formik';
 //Connect redux
 import {connect} from 'react-redux';
 
-//Actions
-import {authenticateUser, resetValues} from './actions';
+//Redux Actions
+import {saveNewEstablishment, resetEstablishmentValues} from './actions/';
 
 // Components
 import Heading from '../../components/Heading/Heading';
@@ -32,219 +33,254 @@ import Button from '../../components/Button/Button';
 import InputSelect from '../../components/Input/InputSelect';
 import TextButton from '../../components/Button/TextButton';
 import InputText from '../../components/Input/InputText';
+import SlideMap from '../../components/SlideUp/SlideMap';
 import ShowAlert from '../../components/Alert/Alert';
 
 // Utilities
 import {theme} from '../../core/theme';
 import {emailValidator, passwordValidator} from '../../core/utils';
-import {cities, validationSchema, optionsId} from '../../config/default';
+import {
+  cities,
+  validationNewUser,
+  establishmentType,
+  departments,
+} from '../../config/default';
 
 class SignUpScreen extends Component {
   state = {
-    name: {value: '', error: ''},
-    email: {value: '', error: ''},
-    password: {value: '', error: ''},
+    establishmentType: '',
+    city: '',
+    state: '',
+    showMap: false,
+    address: '',
+    coordinates: '',
   };
-
-  setName = (text) => {
+  setAddress = (params) => {
+    const {
+      response,
+      location: {lat, lon},
+    } = params;
     this.setState({
-      name: {value: text, error: ''},
+      address: response,
+      coordinates: `${lat}, ${lon}`,
     });
   };
 
-  setEmail = (text) => {
-    this.setState({
-      email: {value: text, error: ''},
-    });
-  };
-
-  setPassword = (text) => {
-    this.setState({
-      password: {value: text, error: ''},
-    });
-  };
-
-  hideAlert = () => this.props.setError();
+  showContent = () => this.setState({showMap: !this.state.showMap});
   signIn = () => this.props.navigation.goBack('LoginScreen');
-
-  _onLoginPressed = () => {
-    const {name, email, password} = this.state;
-    const nameError = nameValidator(name.value);
-    const emailError = emailValidator(email.value);
-    const passwordError = passwordValidator(password.value);
-
-    if (emailError || passwordError) {
-      this.setState({
-        name: {...email, error: nameError},
-        email: {...email, error: emailError},
-        password: {...password, error: passwordError},
-      });
-      return;
+  hideAlert = () => this.props.setError();
+  alertCreation = (registro, error) => {
+    if (registro) {
+      return <ShowAlert msg={'Registro exitoso'} setE={this.hideAlert} />;
+    } else if (error) {
+      return (
+        <ShowAlert
+          msg={'Hubo un error, intente nuevamente.'}
+          setE={this.hideAlert}
+        />
+      );
     }
-
-    let fullname = name.value;
-    let username = email.value;
-    let pass = password.value;
-
-    this.props.loginUser(fullname, username, pass);
+    return null;
   };
 
   initialValues = {
-    userType: '',
     name: '',
     email: '',
     phone: '',
     password: '',
-    stablishment: '',
+    confirm_password:'',
+    establishmentType: '',
+    establishment: '',
     city: '',
     state: '',
     address: '',
-    id: '',
   };
 
   render() {
-    const {email, password} = this.state;
-    const {loading, error} = this.props;
+    const {loading, registro, error} = this.props;
 
     return (
       <SafeAreaView style={styles.container}>
-        <ScrollView>
-          <Heading
-            icon="account-circle-outline"
-            title="Control App"
-            subTitle="Por favor proveea la informacion a continuacion para registrarse."
-          />
-
-          <KeyboardAvoidingView>
-            <>
-              <Formik
-                initialValues={{
-                  ...this.initialValues,
-                  address: this.state.address,
-                }}
-                enableReinitialize
-                validationSchema={validationSchema}
-                onSubmit={(values, {setSubmitting, resetForm}) => {
-                  setSubmitting(true);
-                  this.props.saveNewCiudadano({
-                    ...values,
-                    coordinates: this.state.coordinates,
-                  });
-                  resetForm({});
-                  setSubmitting(false);
-                }}>
-                {({
-                  handleChange,
-                  handleBlur,
-                  handleSubmit,
-                  values,
-                  errors,
-                  touched,
-                }) => (
-                  <View>
-                    <InputSelect
-                      items={optionsId}
-                      value={this.state.documentType}
-                      onPress={handleChange('documentType')}
-                      onChangeText={this.handleState}
-                      placeholder={'Tipo de documento'}
-                      onBlur={handleBlur}
-                      value={values.documentType}
-                      errorText={touched.documentType && errors.documentType}
-                    />
-                    <InputText
-                      label="Nombre"
-                      returnKeyType="next"
-                      placeholder={'Nombre'}
-                      keyboardType={'default'}
-                      onChangeText={(text) => this.setName(text)}
-                      error={!!email.error}
-                      errorText={email.error}
-                      autoCapitalize="none"
-                    />
-                    <InputText
-                      label="Correo electronico"
-                      returnKeyType="next"
-                      placeholder={'Correo electronico'}
-                      keyboardType={'email-address'}
-                      onChangeText={(text) => this.setEmail(text)}
-                      error={!!email.error}
-                      errorText={email.error}
-                      autoCapitalize="none"
-                      autoCompleteType="email"
-                      textContentType="emailAddress"
-                    />
-                    <InputText
-                      returnKeyType="next"
-                      placeholder={'Telefono'}
-                      keyboardType={'phone-pad'}
-                      onChangeText={handleChange('phone')}
-                      onBlur={handleBlur('phone')}
-                      autoCapitalize="none"
-                      value={values.phone}
-                      errorText={touched.phone && errors.phone}
-                    />
-                    <InputText
-                      label="Contraseña"
-                      returnKeyType="done"
-                      placeholder={'Contraseña'}
-                      value={password.value}
-                      onChangeText={(text) => this.setPassword(text)}
-                      error={!!password.error}
-                      errorText={password.error}
-                      secureTextEntry
-                    />
-                    <InputText
-                      label="Nombre del establecimiento"
-                      returnKeyType="next"
-                      placeholder={'Nombre del establecimiento'}
-                      keyboardType={'default'}
-                      onChangeText={(text) => this.setName(text)}
-                      error={!!email.error}
-                      errorText={email.error}
-                      autoCapitalize="none"
-                    />
-                    <InputSelect
-                      items={cities}
-                      value={this.state.city}
-                      onPress={handleChange('city')}
-                      onChangeText={this.handleCity}
-                      placeholder={'Ciudad'}
-                      onBlur={handleBlur}
-                      value={values.city}
-                      errorText={touched.city && errors.city}
-                    />
-                    <InputText
-                      onTouchStart={this.showContent}
-                      returnKeyType="next"
-                      placeholder={'Direccion'}
-                      keyboardType={'default'}
-                      onChangeText={handleChange('address')}
-                      onBlur={handleBlur('address')}
-                      autoCapitalize="none"
-                      value={values.address}
-                      errorText={touched.address && errors.address}
-                    />
-                    <Button
-                      title={'Registrarme'}
-                      style={styles.btnLogin}
-                      onPress={() => console.log('Registrarme')}
-                      loading={loading}
-                    />
-                  </View>
-                )}
-              </Formik>
-            </>
-          </KeyboardAvoidingView>
-
-          <View style={styles.buttonContainer}>
-            <TextButton
-              title={'Ingresar'}
-              style={styles.btnSignUp}
-              onPress={this.signIn}
+        {this.alertCreation(registro, error)}
+        {loading ? (
+          <Loading />
+        ) : (
+          <ScrollView>
+            <Heading
+              icon="account-circle-outline"
+              title="Registro"
+              subTitle="Por favor proveea la información a continuación para registrar su establecimiento comercial."
             />
-          </View>
-        </ScrollView>
+
+            <KeyboardAvoidingView>
+              <>
+                <Formik
+                  initialValues={{
+                    ...this.initialValues,
+                    address: this.state.address,
+                  }}
+                  enableReinitialize
+                  validationSchema={validationNewUser}
+                  onSubmit={(values, {setSubmitting, resetForm}) => {
+                    setSubmitting(true);
+                    // this.props.saveNewCiudadano({
+                    //   ...values,
+                    //   coordinates: this.state.coordinates,
+                    // });
+                    console.log(values);
+                    resetForm({});
+                    setSubmitting(false);
+                  }}>
+                  {({
+                    handleChange,
+                    handleBlur,
+                    handleSubmit,
+                    values,
+                    errors,
+                    touched,
+                  }) => (
+                    <View>
+                      <Text style={styles.descriptionText}>
+                        Información personal
+                      </Text>
+                      <InputText
+                        label="Nombre completo"
+                        returnKeyType="next"
+                        placeholder={'Nombre completo'}
+                        keyboardType={'default'}
+                        onChangeText={handleChange('name')}
+                        onBlur={handleBlur('name')}
+                        autoCapitalize="none"
+                        value={values.name}
+                        errorText={touched.name && errors.name}
+                      />
+                      <InputText
+                        label="Teléfono"
+                        returnKeyType="next"
+                        placeholder={'Teléfono'}
+                        keyboardType={'phone-pad'}
+                        onChangeText={handleChange('phone')}
+                        onBlur={handleBlur('phone')}
+                        autoCapitalize="none"
+                        value={values.phone}
+                        errorText={touched.phone && errors.phone}
+                      />
+                      <InputText
+                        label="Correo electrónico"
+                        returnKeyType="next"
+                        placeholder={'Correo electrónico'}
+                        keyboardType={'email-address'}
+                        onChangeText={handleChange('email')}
+                        onBlur={handleBlur('email')}
+                        autoCapitalize="none"
+                        value={values.email}
+                        errorText={touched.email && errors.email}
+                      />
+                      <InputText
+                        label="Contraseña"
+                        returnKeyType="next"
+                        placeholder={'Contraseña'}
+                        keyboardType={'default'}
+                        onChangeText={handleChange('password')}
+                        onBlur={handleBlur('password')}
+                        autoCapitalize="none"
+                        secureTextEntry={true}
+                        value={values.password}
+                        errorText={touched.password && errors.password}
+                      />
+                      <InputText
+                        label="Confirmar contraseña"
+                        returnKeyType="next"
+                        placeholder={'Confirmar contraseña'}
+                        keyboardType={'default'}
+                        onChangeText={handleChange('confirm_password')}
+                        onBlur={handleBlur('confirm_password')}
+                        autoCapitalize="none"
+                        secureTextEntry={true}
+                        value={values.confirm_password}
+                        errorText={touched.confirm_password && errors.confirm_password}
+                      />
+                      <Text style={styles.descriptionText}>
+                        Información del establecimiento
+                      </Text>
+                      <InputSelect
+                        items={establishmentType}
+                        value={this.state.establishmentType}
+                        onPress={handleChange('establishmentType')}
+                        placeholder={'Tipo de establecimiento'}
+                        onBlur={handleBlur('establishmentType')}
+                        value={values.establishmentType}
+                        errorText={
+                          touched.establishmentType && errors.establishmentType
+                        }
+                      />
+                      <InputText
+                        label="Nombre del establecimiento"
+                        returnKeyType="next"
+                        placeholder={'Nombre del establecimiento'}
+                        keyboardType={'default'}
+                        onChangeText={handleChange('establishment')}
+                        onBlur={handleBlur('establishment')}
+                        value={values.establishment}
+                        errorText={
+                          touched.establishment && errors.establishment
+                        }
+                      />
+                      <InputText
+                        label="Dirección"
+                        onTouchStart={this.showContent}
+                        returnKeyType="next"
+                        placeholder={'Dirección'}
+                        keyboardType={'default'}
+                        onChangeText={handleChange('address')}
+                        onBlur={handleBlur('address')}
+                        autoCapitalize="none"
+                        value={values.address}
+                        errorText={touched.address && errors.address}
+                      />
+                      <InputSelect
+                        items={cities}
+                        value={this.state.city}
+                        onPress={handleChange('city')}
+                        placeholder={'Ciudad'}
+                        onBlur={handleBlur('city')}
+                        value={values.city}
+                        errorText={touched.city && errors.city}
+                      />
+                      <InputSelect
+                        items={departments}
+                        value={this.state.state}
+                        onPress={handleChange('state')}
+                        placeholder={'Departamento'}
+                        onBlur={handleChange('state')}
+                        value={values.state}
+                        errorText={touched.state && errors.state}
+                      />
+                      <Button
+                        title={'Registrar'}
+                        style={styles.btnLogin}
+                        onPress={handleSubmit}
+                        loading={loading}
+                      />
+                    </View>
+                  )}
+                </Formik>
+              </>
+            </KeyboardAvoidingView>
+            <View style={styles.buttonContainer}>
+              <TextButton
+                title={'Ingresar'}
+                style={styles.btnSignUp}
+                onPress={this.signIn}
+              />
+            </View>
+          </ScrollView>
+        )}
+        <SlideMap
+          slide={this.state.showMap}
+          showContent={this.showContent}
+          handleAddress={this.setAddress}
+        />
       </SafeAreaView>
     );
   }
@@ -266,20 +302,27 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
     marginBottom: Platform.OS === 'ios' ? 10 : 2,
   },
+  descriptionText: {
+    color: theme.colors.primary,
+    fontSize: 17,
+    fontWeight: 'bold',
+    marginBottom: 10,
+    marginTop: 30,
+  },
 });
 
 const mapStateToProps = (state) => {
-  const {loading, error} = state.login;
-  return {loading, error};
+  const {data, loading, error, registro} = state.createEstablishment;
+  return {data, loading, error, registro};
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    loginUser: (username, password) => {
-      return dispatch(authenticateUser(username, password));
+    saveNewEstablishment: (data) => {
+      return dispatch(saveNewEstablishment(data));
     },
     setError: () => {
-      return dispatch(resetValues());
+      return dispatch(resetEstablishmentValues());
     },
   };
 };

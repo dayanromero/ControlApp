@@ -69,15 +69,12 @@ class NewUserScreen extends Component {
 
   handleDatePicker = (dateP) => this.setState({expeditionDate: dateP});
   showContent = () => this.setState({showMap: !this.state.showMap});
-  handleState = (text) => this.setState({documentType: text});
-  handleStateTest = (text) => this.setState({testData: text});
-  handleCity = (text) => this.setState({city: text});
-  handleDept = (text) => this.setState({state: text});
   hideAlert = () => this.props.setError();
   userScreen = () => this.props.navigation.navigate('DashboardMap');
 
   alertCreation = (registro, error) => {
     if (registro) {
+      this.setState({expeditionDate: ''})
       return <ShowAlert msg={'Registro exitoso'} setE={this.hideAlert} />;
     } else if (error) {
       return (
@@ -91,6 +88,7 @@ class NewUserScreen extends Component {
   };
 
   initialValues = {
+    address: '',
     name: '',
     city: '',
     state: '',
@@ -143,6 +141,7 @@ class NewUserScreen extends Component {
                   }) => (
                     <View>
                       <InputText
+                        label="Nombres"
                         returnKeyType="next"
                         placeholder={'Nombres'}
                         keyboardType={'default'}
@@ -154,9 +153,10 @@ class NewUserScreen extends Component {
                       />
 
                       <InputText
+                        label="Dirección"
                         onTouchStart={this.showContent}
                         returnKeyType="next"
-                        placeholder={'Direccion'}
+                        placeholder={'Dirección'}
                         keyboardType={'default'}
                         onChangeText={handleChange('address')}
                         onBlur={handleBlur('address')}
@@ -166,36 +166,37 @@ class NewUserScreen extends Component {
                       />
 
                       <InputSelect
+                        label="Ciudad"
                         items={cities}
                         value={this.state.city}
                         onPress={handleChange('city')}
-                        onChangeText={this.handleCity}
                         placeholder={'Ciudad'}
-                        onBlur={handleBlur}
+                        onBlur={handleBlur('city')}
                         value={values.city}
                         errorText={touched.city && errors.city}
                       />
                       <InputSelect
+                        label="Departamento"
                         items={departments}
                         value={this.state.state}
                         onPress={handleChange('state')}
-                        onChangeText={this.handleDept}
                         placeholder={'Departamento'}
-                        onBlur={handleBlur}
+                        onBlur={handleBlur('state')}
                         value={values.state}
                         errorText={touched.state && errors.state}
                       />
                       <InputSelect
+                        lable="Tipo de documento"
                         items={optionsId}
                         value={this.state.documentType}
                         onPress={handleChange('documentType')}
-                        onChangeText={this.handleState}
                         placeholder={'Tipo de documento'}
-                        onBlur={handleBlur}
+                        onBlur={handleBlur('documentType')}
                         value={values.documentType}
                         errorText={touched.documentType && errors.documentType}
                       />
                       <InputText
+                        label="Numero de documento"
                         returnKeyType="next"
                         placeholder={'Numero de documento'}
                         keyboardType={'number-pad'}
@@ -206,9 +207,10 @@ class NewUserScreen extends Component {
                         errorText={touched.id && errors.id}
                       />
                       <DatePicker
+                        label="Fecha de expedición"
                         onPress={handleChange('expeditionDate')}
                         styles={styles.input}
-                        placeholder={'Fecha de expedicion'}
+                        placeholder={'Fecha de expedición'}
                         onChangeText={this.handleDatePicker}
                         onBlur={handleBlur('expeditionDate')}
                         value={this.state.expeditionDate}
@@ -217,18 +219,19 @@ class NewUserScreen extends Component {
                         }
                       />
                       <InputSelect
+                        lable="Prueba"
                         items={optionsTest}
                         value={this.state.testData}
                         onPress={handleChange('testResult')}
                         placeholder={'Prueba'}
-                        onChangeText={this.handleStateTest}
                         onBlur={handleBlur('testResult')}
                         value={values.testResult}
                         errorText={touched.testResult && errors.testResult}
                       />
                       <InputText
+                        lable="Teléfono"
                         returnKeyType="next"
-                        placeholder={'Telefono'}
+                        placeholder={'Teléfono'}
                         keyboardType={'phone-pad'}
                         onChangeText={handleChange('phone')}
                         onBlur={handleBlur('phone')}
@@ -237,8 +240,9 @@ class NewUserScreen extends Component {
                         errorText={touched.phone && errors.phone}
                       />
                       <InputText
+                        lable="Correo electrónico"
                         returnKeyType="next"
-                        placeholder={'Correo electronico'}
+                        placeholder={'Correo electrónico'}
                         keyboardType={'email-address'}
                         onChangeText={handleChange('email')}
                         onBlur={handleBlur('email')}
