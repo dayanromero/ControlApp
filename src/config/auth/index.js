@@ -46,7 +46,7 @@ export function authUser(username, password) {
  */
 export function getUserInfo(token) {
   const auth0 = initializeAuth0();
-  return auth0.auth.userInfo({ token });
+  return auth0.auth.userInfo({token});
 }
 
 /**
@@ -61,6 +61,7 @@ export function createUser(email, username, password) {
   return auth0.auth.createUser({
     email,
     username,
-    password
+    password,
+    connection: 'Username-Password-Authentication',
   });
 }

@@ -25,7 +25,7 @@ export const saveUserSuccess = (data) => {
     };
 };
 
-export const saveUserFailure = (data) => {
+export const saveUserFailure = () => {
     return { type: CREATE_USER_FAILURE };
 };
 

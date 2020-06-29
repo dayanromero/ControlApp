@@ -10,8 +10,7 @@
 
 // Dependencies
 import React, {Component} from 'react';
-import {StyleSheet, Text, View, Platform} from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import {StyleSheet, View, Platform} from 'react-native';
 
 //Connect redux
 import {connect} from 'react-redux';

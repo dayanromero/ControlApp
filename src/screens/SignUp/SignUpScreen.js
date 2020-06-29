@@ -34,11 +34,11 @@ import InputSelect from '../../components/Input/InputSelect';
 import TextButton from '../../components/Button/TextButton';
 import InputText from '../../components/Input/InputText';
 import SlideMap from '../../components/SlideUp/SlideMap';
+import Loading from '../../components/Loading/Loading';
 import ShowAlert from '../../components/Alert/Alert';
 
 // Utilities
 import {theme} from '../../core/theme';
-import {emailValidator, passwordValidator} from '../../core/utils';
 import {
   cities,
   validationNewUser,
@@ -55,6 +55,7 @@ class SignUpScreen extends Component {
     address: '',
     coordinates: '',
   };
+
   setAddress = (params) => {
     const {
       response,
@@ -69,6 +70,7 @@ class SignUpScreen extends Component {
   showContent = () => this.setState({showMap: !this.state.showMap});
   signIn = () => this.props.navigation.goBack('LoginScreen');
   hideAlert = () => this.props.setError();
+
   alertCreation = (registro, error) => {
     if (registro) {
       return <ShowAlert msg={'Registro exitoso'} setE={this.hideAlert} />;
@@ -88,7 +90,7 @@ class SignUpScreen extends Component {
     email: '',
     phone: '',
     password: '',
-    confirm_password:'',
+    confirm_password: '',
     establishmentType: '',
     establishment: '',
     city: '',
@@ -123,11 +125,10 @@ class SignUpScreen extends Component {
                   validationSchema={validationNewUser}
                   onSubmit={(values, {setSubmitting, resetForm}) => {
                     setSubmitting(true);
-                    // this.props.saveNewCiudadano({
-                    //   ...values,
-                    //   coordinates: this.state.coordinates,
-                    // });
-                    console.log(values);
+                    this.props.signUpEstablishment({
+                      ...values,
+                      coordinates: this.state.coordinates,
+                    });
                     resetForm({});
                     setSubmitting(false);
                   }}>
@@ -141,7 +142,63 @@ class SignUpScreen extends Component {
                   }) => (
                     <View>
                       <Text style={styles.descriptionText}>
-                        Información personal
+                        Información del establecimiento
+                      </Text>
+                      <InputText
+                        label="Dirección"
+                        onTouchStart={this.showContent}
+                        returnKeyType="next"
+                        placeholder={'Dirección'}
+                        keyboardType={'default'}
+                        onChangeText={handleChange('address')}
+                        onBlur={handleBlur('address')}
+                        autoCapitalize="none"
+                        value={values.address}
+                        errorText={touched.address && errors.address}
+                      />
+                      <InputSelect
+                        items={establishmentType}
+                        value={this.state.establishmentType}
+                        onPress={handleChange('establishmentType')}
+                        placeholder={'Tipo de establecimiento'}
+                        onBlur={handleBlur('establishmentType')}
+                        value={values.establishmentType}
+                        errorText={
+                          touched.establishmentType && errors.establishmentType
+                        }
+                      />
+                      <InputText
+                        label="Nombre del establecimiento"
+                        returnKeyType="next"
+                        placeholder={'Nombre del establecimiento'}
+                        keyboardType={'default'}
+                        onChangeText={handleChange('establishment')}
+                        onBlur={handleBlur('establishment')}
+                        value={values.establishment}
+                        errorText={
+                          touched.establishment && errors.establishment
+                        }
+                      />
+                      <InputSelect
+                        items={cities}
+                        value={this.state.city}
+                        onPress={handleChange('city')}
+                        placeholder={'Ciudad'}
+                        onBlur={handleBlur('city')}
+                        value={values.city}
+                        errorText={touched.city && errors.city}
+                      />
+                      <InputSelect
+                        items={departments}
+                        value={this.state.state}
+                        onPress={handleChange('state')}
+                        placeholder={'Departamento'}
+                        onBlur={handleChange('state')}
+                        value={values.state}
+                        errorText={touched.state && errors.state}
+                      />
+                      <Text style={styles.descriptionText}>
+                        Información personal (Propietario)
                       </Text>
                       <InputText
                         label="Nombre completo"
@@ -198,63 +255,9 @@ class SignUpScreen extends Component {
                         autoCapitalize="none"
                         secureTextEntry={true}
                         value={values.confirm_password}
-                        errorText={touched.confirm_password && errors.confirm_password}
-                      />
-                      <Text style={styles.descriptionText}>
-                        Información del establecimiento
-                      </Text>
-                      <InputSelect
-                        items={establishmentType}
-                        value={this.state.establishmentType}
-                        onPress={handleChange('establishmentType')}
-                        placeholder={'Tipo de establecimiento'}
-                        onBlur={handleBlur('establishmentType')}
-                        value={values.establishmentType}
                         errorText={
-                          touched.establishmentType && errors.establishmentType
+                          touched.confirm_password && errors.confirm_password
                         }
-                      />
-                      <InputText
-                        label="Nombre del establecimiento"
-                        returnKeyType="next"
-                        placeholder={'Nombre del establecimiento'}
-                        keyboardType={'default'}
-                        onChangeText={handleChange('establishment')}
-                        onBlur={handleBlur('establishment')}
-                        value={values.establishment}
-                        errorText={
-                          touched.establishment && errors.establishment
-                        }
-                      />
-                      <InputText
-                        label="Dirección"
-                        onTouchStart={this.showContent}
-                        returnKeyType="next"
-                        placeholder={'Dirección'}
-                        keyboardType={'default'}
-                        onChangeText={handleChange('address')}
-                        onBlur={handleBlur('address')}
-                        autoCapitalize="none"
-                        value={values.address}
-                        errorText={touched.address && errors.address}
-                      />
-                      <InputSelect
-                        items={cities}
-                        value={this.state.city}
-                        onPress={handleChange('city')}
-                        placeholder={'Ciudad'}
-                        onBlur={handleBlur('city')}
-                        value={values.city}
-                        errorText={touched.city && errors.city}
-                      />
-                      <InputSelect
-                        items={departments}
-                        value={this.state.state}
-                        onPress={handleChange('state')}
-                        placeholder={'Departamento'}
-                        onBlur={handleChange('state')}
-                        value={values.state}
-                        errorText={touched.state && errors.state}
                       />
                       <Button
                         title={'Registrar'}
@@ -271,7 +274,7 @@ class SignUpScreen extends Component {
               <TextButton
                 title={'Ingresar'}
                 style={styles.btnSignUp}
-                onPress={this.signIn}
+                onPress={this.createAuth0User}
               />
             </View>
           </ScrollView>
@@ -318,7 +321,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    saveNewEstablishment: (data) => {
+    signUpEstablishment: (data) => {
       return dispatch(saveNewEstablishment(data));
     },
     setError: () => {
