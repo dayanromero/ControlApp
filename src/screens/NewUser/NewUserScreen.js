@@ -61,6 +61,7 @@ class NewUserScreen extends Component {
       response,
       location: {lat, lon},
     } = params;
+
     this.setState({
       address: response,
       coordinates: `${lat}, ${lon}`,
@@ -69,12 +70,14 @@ class NewUserScreen extends Component {
 
   handleDatePicker = (dateP) => this.setState({expeditionDate: dateP});
   showContent = () => this.setState({showMap: !this.state.showMap});
-  hideAlert = () => this.props.setError();
+  hideAlert = () => {
+    this.props.setError()
+    this.setState({expeditionDate: '', address: ''})
+  };
   userScreen = () => this.props.navigation.navigate('DashboardMap');
 
   alertCreation = (registro, error) => {
     if (registro) {
-      this.setState({expeditionDate: ''})
       return <ShowAlert msg={'Registro exitoso'} setE={this.hideAlert} />;
     } else if (error) {
       return (
@@ -105,7 +108,7 @@ class NewUserScreen extends Component {
     return (
       <SafeAreaView style={styles.container}>
         {this.alertCreation(registro, error)}
-        {loading ? (
+        {loading || !loading == 'undefinded' ? (
           <Loading />
         ) : (
           <ScrollView style={styles.scrollView}>

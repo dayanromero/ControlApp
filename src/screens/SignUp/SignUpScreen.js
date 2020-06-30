@@ -67,9 +67,12 @@ class SignUpScreen extends Component {
     });
   };
 
-  showContent = () => this.setState({showMap: !this.state.showMap});
+  showContent = () => this.setState({ showMap: !this.state.showMap });
   signIn = () => this.props.navigation.goBack('LoginScreen');
-  hideAlert = () => this.props.setClearError();
+  hideAlert = () => {
+    this.props.setClearError();
+    
+  };
 
   alertCreation = (registro, error) => {
     if (registro) {
@@ -104,7 +107,7 @@ class SignUpScreen extends Component {
     return (
       <SafeAreaView style={styles.container}>
         {this.alertCreation(registro, error)}
-        {loading ? (
+        {loading || !loading == 'undefinded' ? (
           <Loading />
         ) : (
           <ScrollView>
@@ -274,7 +277,7 @@ class SignUpScreen extends Component {
               <TextButton
                 title={'Ingresar'}
                 style={styles.btnSignUp}
-                onPress={this.createAuth0User}
+                onPress={this.signIn}
               />
             </View>
           </ScrollView>

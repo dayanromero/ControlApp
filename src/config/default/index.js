@@ -54,7 +54,7 @@ export const validationNewUser = yup.object({
    .required('Campo requerido'),
   confirm_password: yup
     .string()
-    .required()
+    .required('Debe confirmar su contraseña')
     .oneOf([
        yup.ref('password'), null], 'La contraseña debe coincidir'),
   type: yup.string().required('Campo requerido'),
