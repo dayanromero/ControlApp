@@ -5,7 +5,7 @@ import {
   CLEAR_ESTABLISHMENT,
 } from '../constants';
 
-import {createEstablishment} from '../../../config/api';
+import {createZone} from '../../../config/api';
 import {createUser} from '../../../config/auth';
 
 export const saveEstablishment = (data) => {
@@ -35,26 +35,34 @@ export const resetEstablishmentValues = () => {
 };
 
 export const saveNewEstablishment = (data) => {
-  const { email, name, password } = data;
-  return (dispatch) => {
+  const {
+    email,
+    name,
+    password,
+    establishment,
+    type,
+    coordinates,
+    address,
+    city,
+    state,
+  } = data;
+  const newData = {
+    name: establishment,
+    type,
+    coordinates,
+    address,
+    city,
+    state,
+  };
+  return async (dispatch) => {
     dispatch(saveEstablishment(data));
-    createUser(email, name, password)
-      .then((response) => {
-          console.log('response: ', {...data, ...response})
-        // createEstablishment({...data, ...response})
-        //   .then((response) => {
-        //     dispatch(saveEstablishmentSuccess(response));
-        //     if (!response) {
-        //       dispatch(saveEstablishmentFailure());
-        //     }
-        //   })
-        //   .catch((error) => {
-        //     dispatch(saveEstablishmentFailure(error));
-        //   });
-      })
-      .catch((error) => {
-        console.log('error: ', error)
-        //dispatch(saveEstablishmentFailure(error));
-      });
+    try {
+      const Auth0Response = await createUser(email, name, password);
+      const {Id: auth_id} = Auth0Response;
+      const dataToSave = await createZone({...newData, auth_id});
+      dispatch(saveEstablishmentSuccess(dataToSave));
+    } catch (error) {
+      dispatch(saveEstablishmentFailure(error));
+    }
   };
 };

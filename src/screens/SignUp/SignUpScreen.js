@@ -48,7 +48,7 @@ import {
 
 class SignUpScreen extends Component {
   state = {
-    establishmentType: '',
+    type: '',
     city: '',
     state: '',
     showMap: false,
@@ -69,7 +69,7 @@ class SignUpScreen extends Component {
 
   showContent = () => this.setState({showMap: !this.state.showMap});
   signIn = () => this.props.navigation.goBack('LoginScreen');
-  hideAlert = () => this.props.setError();
+  hideAlert = () => this.props.setClearError();
 
   alertCreation = (registro, error) => {
     if (registro) {
@@ -91,7 +91,7 @@ class SignUpScreen extends Component {
     phone: '',
     password: '',
     confirm_password: '',
-    establishmentType: '',
+    type: '',
     establishment: '',
     city: '',
     state: '',
@@ -158,13 +158,13 @@ class SignUpScreen extends Component {
                       />
                       <InputSelect
                         items={establishmentType}
-                        value={this.state.establishmentType}
-                        onPress={handleChange('establishmentType')}
+                        value={this.state.type}
+                        onPress={handleChange('type')}
                         placeholder={'Tipo de establecimiento'}
-                        onBlur={handleBlur('establishmentType')}
-                        value={values.establishmentType}
+                        onBlur={handleBlur('type')}
+                        value={values.type}
                         errorText={
-                          touched.establishmentType && errors.establishmentType
+                          touched.type && errors.type
                         }
                       />
                       <InputText
@@ -324,7 +324,7 @@ const mapDispatchToProps = (dispatch) => {
     signUpEstablishment: (data) => {
       return dispatch(saveNewEstablishment(data));
     },
-    setError: () => {
+    setClearError: () => {
       return dispatch(resetEstablishmentValues());
     },
   };
